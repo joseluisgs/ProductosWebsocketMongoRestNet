@@ -5,6 +5,7 @@ using ProductosMongoRestNet.Config.Storage;
 using ProductosMongoRestNet.Database;
 using ProductosMongoRestNet.Services;
 using ProductosMongoRestNet.Services.Storage;
+using ProductosMongoRestNet.Websocket;
 using Serilog;
 using Serilog.Core;
 
@@ -33,6 +34,9 @@ if (app.Environment.IsDevelopment())
 
 // Usamos HTTPS redirection
 app.UseHttpsRedirection();
+
+// Habilitamos el middleware de WebSockets
+app.UseWebSockets();
 
 // Habilitamos el middleware de Autorización
 app.UseAuthorization();
@@ -90,6 +94,9 @@ WebApplicationBuilder InitServices()
 
     // Servicios de storage
     myBuilder.Services.AddSingleton<IFileStorageService, FileStorageService>();
+
+    // WebSocketHandler
+    myBuilder.Services.AddSingleton<WebSocketHandler>();
 
 
     // Añadimos los controladores
