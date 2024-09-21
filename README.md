@@ -2,6 +2,8 @@
 
 Ejemplo de una API REST básica en .NET Core 8 con MongoDB y Websocket
 
+![image](./image/image.webp)
+
 - [ProductosWebsocketMongoRestNet](#productoswebsocketmongorestnet)
   - [Descripción](#descripción)
   - [Endpoints](#endpoints)
