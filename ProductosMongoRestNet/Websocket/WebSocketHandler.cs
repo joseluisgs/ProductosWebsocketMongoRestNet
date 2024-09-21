@@ -37,8 +37,11 @@ public class WebSocketHandler
     // Este método se encarga de enviar un mensaje a todos los clientes conectados
     public async Task NotifyAllAsync<T>(Notification<T> notification)
     {
-        // Escribimos e ignoramos los valores nulos para evitar errores de serialización
-        var jsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+        // Escribimos e ignoramos los valores nulos para evitar errores de serialización e idnetamos
+        var jsonSettings = new JsonSerializerSettings { 
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented
+        };
         var json = JsonConvert.SerializeObject(notification, jsonSettings);
         _logger.LogInformation($"Notifying all clients: {json}");
         var buffer = Encoding.UTF8.GetBytes(json);
