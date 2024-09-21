@@ -1,16 +1,15 @@
 ﻿namespace ProductosMongoRestNet.Models;
 
-
 public class Notification<T>
 {
-    T Data { get; set; }
-    NotificationType Type { get; set; }
-    DateTime CreatedAt { get; set; }
-
-    public class NotificationType
+    public enum NotificationType
     {
-        public const string Create = "create";
-        public const string Update = "update";
-        public const string Delete = "delete";
+        Create,
+        Update,
+        Delete
     }
+
+    public T Data { get; set; }
+    public string Type { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

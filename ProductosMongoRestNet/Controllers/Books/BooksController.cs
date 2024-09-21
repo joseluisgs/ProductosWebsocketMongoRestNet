@@ -47,7 +47,14 @@ public class BooksController : ControllerBase
         var savedBook = await _booksService.CreateAsync(book);
 
         // Enviamos la notificación a todos los clientes conectados
-        await _webSocketHandler.NotifyAllAsync("New book created with id: " + savedBook.Id);
+        var notification = new Notification<Book>
+        {
+            Data = savedBook,
+            Type = typeof(Notification<Book>.NotificationType).GetEnumName(Notification<Book>.NotificationType
+                .Create),
+            CreatedAt = DateTime.Now
+        };
+        await _webSocketHandler.NotifyAllAsync(notification);
 
         // Devolvemos la respuesta con el libro creado
         return CreatedAtAction(nameof(GetById), new { id = book.Id }, savedBook);
@@ -63,7 +70,14 @@ public class BooksController : ControllerBase
         if (updatedBook is null) return NotFound("Book not found with the provided id: " + id);
 
         // Enviamos la notificación a todos los clientes conectados
-        await _webSocketHandler.NotifyAllAsync("Book updated with id: " + updatedBook.Id);
+        var notification = new Notification<Book>
+        {
+            Data = updatedBook,
+            Type = typeof(Notification<Book>.NotificationType).GetEnumName(Notification<Book>.NotificationType
+                .Update),
+            CreatedAt = DateTime.Now
+        };
+        await _webSocketHandler.NotifyAllAsync(notification);
 
         return Ok(updatedBook);
     }
@@ -86,7 +100,14 @@ public class BooksController : ControllerBase
         }
 
         // Eliminamos la notificación a todos los clientes conectados
-        await _webSocketHandler.NotifyAllAsync("Book deleted with id: " + deletedBook.Id);
+        var notification = new Notification<Book>
+        {
+            Data = deletedBook,
+            Type = typeof(Notification<Book>.NotificationType).GetEnumName(Notification<Book>.NotificationType
+                .Delete),
+            CreatedAt = DateTime.Now
+        };
+        await _webSocketHandler.NotifyAllAsync(notification);
 
         // Devolvemos la respuesta con el libro eliminado
         return NoContent();
@@ -122,7 +143,14 @@ public class BooksController : ControllerBase
             //book.Image = fileName;
 
             // Avismamos a los clientes conectados
-            await _webSocketHandler.NotifyAllAsync("Book image updated with id: " + book.Id);
+            var notification = new Notification<Book>
+            {
+                Data = book,
+                Type = typeof(Notification<Book>.NotificationType).GetEnumName(Notification<Book>.NotificationType
+                    .Update),
+                CreatedAt = DateTime.Now
+            };
+            await _webSocketHandler.NotifyAllAsync(notification);
 
             // Devolvemos el libro actualizado con la nueva URL de la imagen
             return Ok(await _booksService.UpdateAsync(id, book));

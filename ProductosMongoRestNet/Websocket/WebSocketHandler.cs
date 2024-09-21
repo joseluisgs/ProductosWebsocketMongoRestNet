@@ -1,5 +1,7 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
+using Newtonsoft.Json;
+using ProductosMongoRestNet.Models;
 
 namespace ProductosMongoRestNet.Websocket;
 
@@ -33,10 +35,13 @@ public class WebSocketHandler
     }
 
     // Este método se encarga de enviar un mensaje a todos los clientes conectados
-    public async Task NotifyAllAsync(string message)
+    public async Task NotifyAllAsync<T>(Notification<T> notification)
     {
-        _logger.LogInformation($"Notifying all clients: {message}");
-        var buffer = Encoding.UTF8.GetBytes(message);
+        // Escribimos e ignoramos los valores nulos para evitar errores de serialización
+        var jsonSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+        var json = JsonConvert.SerializeObject(notification, jsonSettings);
+        _logger.LogInformation($"Notifying all clients: {json}");
+        var buffer = Encoding.UTF8.GetBytes(json);
         // Enviamos el mensaje a todos los clientes conectados
         var tasks = _sockets.Select(socket =>
                 socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true,

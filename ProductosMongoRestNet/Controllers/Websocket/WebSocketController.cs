@@ -24,7 +24,6 @@ public class WebSocketController : ControllerBase
             // Accept the WebSocket connection and handle messages/events within the WebSocketHandler class.
             var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
             await _webSocketHandler.HandleAsync(webSocket);
-            await _webSocketHandler.NotifyAllAsync("New WebSocket connection established.");
         }
         else
         {
