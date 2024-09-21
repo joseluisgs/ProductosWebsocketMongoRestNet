@@ -1,0 +1,6 @@
+@ProductosMongoRestNet_HostAddress = http://localhost:5118
+
+GET {{ProductosMongoRestNet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

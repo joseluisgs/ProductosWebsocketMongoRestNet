@@ -1,0 +1,6 @@
+﻿services:
+  productosmongorestnet:
+    image: productosmongorestnet
+    build:
+      context: .
+      dockerfile: ProductosMongoRestNet/Dockerfile
